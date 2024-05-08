@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gaming Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/styles/tendencias.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="icon" href="/assets/icono.ico" />
+
+  <!--ESTOS DOS SON IMPORTANTES PARA LA INTERACCION CON FIREBASE-->
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-dark order-bottom border-body" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/index.html">
+                <img src="/assets/logo1.png" style="width: 150px; height: 100px; object-fit: contain" alt="Logo" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse mx-auto text-center d-flex align-items-center justify-content-center" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-2 mb-lg-0 justify-content-center fw-bold">
+                    <li class="nav-item">
+                        <a class="nav-link active pe-4 ps-4" aria-current="page" href="tendencias.html">Tendencias</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link pe-4 ps-4" href="comunidad.html">Comunidad</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link pe-4 ps-4" href="noticias.html">Noticias</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link pe-4 ps-4" href="soporte.html">Soporte</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="content-icons pe-5" id="userIconContainer">
+                <a href=""><i class="bi bi-cart-plus pe-4" style="font-size: 25px; color: #fff"></i></a>
+                <a href="login.html" id="userIconLink"><i class="bi bi-person-circle" style="font-size: 25px; color: #fff"></i></a>
+              </div>
+        
+              <div class="content-out pe-3" id="signOutButton" >
+                <a href=""><i class="bi bi-cart-plus pe-4" style="font-size: 25px; color: #fff"></i></a>
+
+                <a href="" class="btnsingout pe-2" id="signOutBtn">Cerrar sesión</a>
+              </div>
+            
+        </div>
+    </nav>
+
+    <div class="container mt-5 mb-5 d-flex align-items-center justify-content-center w-100 flex-column gap-4">
+        <div class="filter-options">
+            <div class="dropdown position-relative d-inline-block pe-5">
+                <button class="dropbtn text fs-5 text-white pt-3 pb-3 ps-5 pe-5 text-start">
+                    Sistemas
+                </button>
+                <div class="dropdown-content text-white w-75">
+                    <a href="#" class="text">PC</a>
+                    <a href="#">Mac</a>
+                    <a href="#">Linux</a>
+                    <a href="#">Switch</a>
+                    <a href="#">Playstation 4</a>
+                    <a href="#">Playstation 5</a>
+                    <a href="#">Xbox One</a>
+                    <a href="#">Xbox Series X|S</a>
+                    <a href="#">GeForce Now</a>
+                </div>
+            </div>
+            <div class="dropdown position-relative d-inline-block pe-5">
+                <button class="dropbtn text fs-5 text-white pt-3 pb-3 ps-5 pe-5 text-start">
+                    Plataformas
+                </button>
+                <div class="dropdown-content text-white w-75">
+                    <a href="#">Battle.net</a>
+                    <a href="#">EpicGames</a>
+                    <a href="#">GOG.com</a>
+                    <a href="#">Instang Gaming</a>
+                    <a href="#">Microsoft Store</a>
+                </div>
+            </div>
+            <div class="dropdown position-relative d-inline-block pe-5">
+                <button class="dropbtn text fs-5 text-white pt-3 pb-3 ps-5 pe-5 text-start">
+                    Géneros
+                </button>
+                <div class="dropdown-content text-white w-75">
+                    <a href="#">Acción</a>
+                    <a href="#">Aventura</a>
+                    <a href="#">Cooperación</a>
+                    <a href="#">Carreras</a>
+                    <a href="#">FPS</a>
+                    <a href="#">Free to Play</a>
+                    <a href="#">Indies</a>
+                    <a href="#">MMO</a>
+                </div>
+            </div>
+            <div class="dropdown position-relative d-inline-block pe-5">
+                <button class="dropbtn text fs-5 text-white pt-3 pb-3 ps-5 pe-5 text-start">
+                    Ordenar por:
+                </button>
+                <div class="dropdown-content text-white w-75">
+                    <a href="#">Supervivencias</a>
+                    <a href="#">Descuento: Más alto</a>
+                    <a href="#">Precio: Menor a Mayor</a>
+                    <a href="#">Precio: Mayor a menor</a>
+                    <a href="#">Salida: Reciente</a>
+                    <a href="#">Salida: Antigua</a>
+                </div>
+            </div>
+        </div>
+        <div class="price-range d-flex text-white align-items-center justify-content-center ">
+            <h5 class="pt-4">Entre</h5>
+            <div class="container mt-3 text-white w-25">
+                <input type="number" id="minPriceInput" class="form-control" style="background-color: hsla(0, 0%, 6%, .4); color: #fff;">
+            </div>
+            <h6 class="pt-3">y</h6>
+            <div class="container mt-3 w-25">
+                <input type="number" id="maxPriceInput" class="form-control" style="background-color: hsla(0, 0%, 6%, .4); color: #fff;">
+            </div>
+            <h6 class="pt-4 pe-4">$</h6> 
+            <div class="separador mt-3"></div>
+           
+            <div class="search w-100 d-flex m-3">
+                <h5 class="pt-4">Buscar...</h5>
+                <div class="container mt-3 text-white">
+                    <input type="text" id="nombreJuegoInput" class="form-control"  style="background-color: hsla(0, 0%, 6%, .4); color: #fff;">
+                </div>
+                
+
+            </div>
+
+        </div>
+
+      
+        
+        
+    </div>
+
+    <div class="games mt-5 mb-5">
+        <div class="container mt-5 fs-2 fw-bold text-white">Tendencias</div>
+        <div class="container mt-5 d-flex flex-wrap align-items-center justify-content-center" id="gamescontent"
+            style="gap: 25px">
+            <div class="item ">
+                <a href="" class="cover position-relative d-inline-block overflow-hidden object-fit-cover" onmouseover="playVideo(this)" onmouseout="pauseVideo(this)">
+                    <picture>
+                        <img style="width: 350px; height: 200px; border-radius: 12px"
+                            src="https://gaming-cdn.com/images/products/2207/380x218/fallout-4-goty-edition-goty-edition-pc-juego-steam-cover.jpg?v=1714165200"
+                            loading="lazy" onload="lazyLoadImage(this)" alt="" />
+                    </picture>
+                    <video preload="none" loop muted playsinline
+                        style="max-width: 350px; max-height: 200px; object-fit: cover">
+                        <source
+                            src="https://gaming-cdn.com/videos/products/2207/800x450/fallout-4-goty-edition-goty-edition-pc-juego-steam-preview.webm?v=1657053009"
+                            type="video/webm" />
+                    </video>
+                </a>
+
+                <div class="information text-white d-flex overflow-hidden">
+                    <div class="text-game">Fallout 4 GOTY Edition</div>
+                    <div class="price ms-auto">7.49$</div>
+                </div>
+            </div>
+            <div class="item">
+                <a href="" class="cover position-relative d-inline-block overflow-hidden object-fit-cover" onmouseover="playVideo(this)" onmouseout="pauseVideo(this)">
+                    <picture>
+                        <img style="width: 350px; height: 200px; border-radius: 12px"
+                            src="https://gaming-cdn.com/images/products/5679/380x218/red-dead-redemption-2-pc-juego-rockstar-cover.jpg?v=1714165200"
+                            loading="lazy" onload="lazyLoadImage(this)" alt="" />
+                    </picture>
+                    <video preload="none" loop muted playsinline
+                        style="max-width: 350px; max-height: 200px; object-fit: cover">
+                        <source
+                            src="https://gaming-cdn.com/videos/products/5679/800x450/red-dead-redemption-2-pc-juego-rockstar-preview.webm?v=1657034665"
+                            type="video/webm" />
+                    </video>
+                </a>
+
+                <div class="information text-white d-flex overflow-hidden">
+                    <div class="text-game">Red Dead Redemption 2</div>
+                    <div class="price ms-auto">15.73$</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <a href="" class="cover position-relative d-inline-block overflow-hidden object-fit-cover" onmouseover="playVideo(this)" onmouseout="pauseVideo(this)">
+                    <picture>
+                        <img style="width: 350px; max-height: 200px; border-radius: 12px"
+                            src="https://gaming-cdn.com/images/products/4211/380x218/grand-theft-auto-v-premium-online-edition-premium-online-edition-pc-juego-rockstar-cover.jpg?v=1714165200"
+                            loading="lazy" onload="lazyLoadImage(this)" alt="" />
+                    </picture>
+                    <video preload="none" loop muted playsinline
+                        style="max-width: 350px; max-height: 200px; object-fit: cover">
+                        <source
+                            src="https://gaming-cdn.com/videos/products/4211/800x450/grand-theft-auto-v-premium-online-edition-premium-online-edition-pc-juego-rockstar-preview.webm?v=1657029673"
+                            type="video/webm" />
+                    </video>
+                </a>
+
+                <div class="information text-white d-flex overflow-hidden">
+                    <div class="text-game">
+                        Grand Theft Auto V: Premium Online Edition
+                    </div>
+                    <div class="price ms-auto">10.49$</div>
+                </div>
+            </div>
+            
+
+            <div class="item">
+                <a href="" class="cover position-relative d-inline-block overflow-hidden object-fit-cover" onmouseover="playVideo(this)" onmouseout="pauseVideo(this)">
+                    <picture>
+                        <img style="width: 350px; max-height: 200px; border-radius: 12px"
+                            src="https://gaming-cdn.com/images/products/16592/380x218/buckshot-roulette-pc-juego-steam-cover.jpg?v=1712846646"
+                            loading="lazy" onload="lazyLoadImage(this)" alt="" />
+                    </picture>
+                    <video preload="none" loop muted playsinline
+                        style="max-width: 350px; max-height: 200px; object-fit: cover">
+                        <source
+                            src="https://gaming-cdn.com/videos/products/16592/800x450/buckshot-roulette-pc-juego-steam-preview.webm?v=1712831738"
+                            type="video/webm" />
+                    </video>
+                </a>
+
+                <div class="information text-white d-flex overflow-hidden">
+                    <div class="text-game">
+                        Buckshot Roulette
+                    </div>
+                    <div class="price ms-auto">2.49$</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <a href="" class="cover position-relative d-inline-block overflow-hidden object-fit-cover" onmouseover="playVideo(this)" onmouseout="pauseVideo(this)">
+                    <picture>
+                        <img style="width: 350px; max-height: 200px; border-radius: 12px"
+                            src="https://gaming-cdn.com/images/products/9093/380x218/ghost-of-tsushima-director-s-cut-pc-juego-steam-cover.jpg?v=1711457077"
+                            loading="lazy" onload="lazyLoadImage(this)" alt="" />
+                    </picture>
+                    <video preload="none" loop muted playsinline
+                        style="max-width: 350px; max-height: 200px; object-fit: cover">
+                        <source
+                            src="https://gaming-cdn.com/videos/products/9093/800x450/ghost-of-tsushima-director-s-cut-pc-juego-steam-preview.webm?v=1709748225"
+                            type="video/webm" />
+                    </video>
+                </a>
+
+                <div class="information text-white d-flex overflow-hidden">
+                    <div class="text-game">
+                        Ghost of Tsushima: Director's Cut
+                    </div>
+                    <div class="price ms-auto">45.99$</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <a href="" class="cover position-relative d-inline-block overflow-hidden object-fit-cover" onmouseover="playVideo(this)" onmouseout="pauseVideo(this)">
+                    <picture>
+                        <img style="width: 350px; max-height: 200px; border-radius: 12px"
+                            src="https://gaming-cdn.com/images/products/5895/380x218/the-outlast-trials-pc-juego-steam-cover.jpg?v=1711538978"
+                            loading="lazy" onload="lazyLoadImage(this)" alt="" />
+                    </picture>
+                    <video preload="none" loop muted playsinline
+                        style="max-width: 350px; max-height: 200px; object-fit: cover">
+                        <source
+                            src="https://gaming-cdn.com/videos/products/5895/800x450/the-outlast-trials-pc-juego-steam-preview.webm?v=1708516947"
+                            type="video/webm" />
+                    </video>
+                </a>
+
+                <div class="information text-white d-flex overflow-hidden">
+                    <div class="text-game">
+                        The Outlast Trials
+                    </div>
+                    <div class="price ms-auto">23.99$</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <a href="" class="cover position-relative d-inline-block overflow-hidden object-fit-cover" onmouseover="playVideo(this)" onmouseout="pauseVideo(this)">
+                    <picture>
+                        <img style="width: 350px; max-height: 200px; border-radius: 12px"
+                            src="https://gaming-cdn.com/images/products/14769/380x218/cyberpunk-2077-ultimate-edition-ultimate-edition-pc-juego-gog-com-cover.jpg?v=1701776924"
+                            loading="lazy" onload="lazyLoadImage(this)" alt="" />
+                    </picture>
+                    <video preload="none" loop muted playsinline
+                        style="max-width: 350px; max-height: 200px; object-fit: cover">
+                        <source
+                            src="https://gaming-cdn.com/videos/products/14769/800x450/cyberpunk-2077-ultimate-edition-ultimate-edition-pc-juego-gog-com-preview.webm?v=1691678661"
+                            type="video/webm" />
+                    </video>
+                </a>
+
+                <div class="information text-white d-flex overflow-hidden">
+                    <div class="text-game">
+                        Cyberpunk 2077: Ultimate Edition
+                    </div>
+                    <div class="price ms-auto">36.99$</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <a href="" class="cover position-relative d-inline-block overflow-hidden object-fit-cover" onmouseover="playVideo(this)" onmouseout="pauseVideo(this)">
+                    <picture>
+                        <img style="width: 350px; max-height: 200px; border-radius: 12px"
+                            src="https://gaming-cdn.com/images/products/15070/380x218/call-of-duty-modern-warfare-iii-lote-multigeneracion-xbox-one-xbox-series-x-s-cross-gen-bundle-xbox-one-xbox-series-x-s-juego-microsoft-store-cover.jpg?v=1699604438"
+                            loading="lazy" onload="lazyLoadImage(this)" alt="" />
+                    </picture>
+                    <video preload="none" loop muted playsinline
+                        style="max-width: 350px; max-height: 200px; object-fit: cover">
+                        <source
+                            src="https://gaming-cdn.com/videos/products/15070/800x450/call-of-duty-modern-warfare-iii-lote-multigeneracion-xbox-one-xbox-series-x-s-cross-gen-bundle-xbox-one-xbox-series-x-s-juego-microsoft-store-preview.webm?v=1695640267"
+                            type="video/webm" />
+                    </video>
+                </a>
+
+                <div class="information text-white d-flex overflow-hidden">
+                    <div class="text-game">
+                        Call of Duty: Modern Warfare III
+                    </div>
+                    <div class="price ms-auto">46.99$</div>
+                </div>
+            </div>
+
+            <div class="item">
+                <a href="" class="cover position-relative d-inline-block overflow-hidden object-fit-cover" onmouseover="playVideo(this)" onmouseout="pauseVideo(this)">
+                    <picture>
+                        <img style="width: 350px; max-height: 200px; border-radius: 12px"
+                            src="https://gaming-cdn.com/images/products/9229/380x218/robocop-rogue-city-pc-juego-steam-cover.jpg?v=1701276307"
+                            loading="lazy" onload="lazyLoadImage(this)" alt="" />
+                    </picture>
+                    <video preload="none" loop muted playsinline
+                        style="max-width: 350px; max-height: 200px; object-fit: cover">
+                        <source
+                            src="https://gaming-cdn.com/videos/products/9229/800x450/robocop-rogue-city-pc-juego-steam-preview.webm?v=1698332802"
+                            type="video/webm" />
+                    </video>
+                </a>
+
+                <div class="information text-white d-flex overflow-hidden">
+                    <div class="text-game">
+                        RoboCop: Rogue City
+                    </div>
+                    <div class="price ms-auto">20.49$</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container mx-auto  mb-5" id="adminSection" style="display: none;">
+     
+        <div class="content d-flex align-items-center justify-content-center">
+            <a href="admin.html" id="icon-add" class="d-flex m-auto gap-3 border-black rounded-4 px-4" style="border: none; box-shadow: inset 0 0 0 2px #3d3d3d; background-color: hsla(0, 0%, 6%, .4);">
+            <i class="bi bi-plus-lg"></i>
+            <p class="my-auto"> Añadir Juegos...</p>
+        </a>
+        </div>
+         
+    </div>
+
+    <footer>
+        <div class="last-content container-sm">
+            <div class="links">
+                <div class="text-center text-white pt-5">
+                    <div class="row">
+                        <div class="col">
+                            <div class="first-col d-flex flex-column align-items-start gap-3">
+                                <a href="">Términos y condiciones</a>
+                                <a href="">Política de privacidad</a>
+                                <a href="">Contacto</a>
+                                <a href=""><i class="bi bi-gift pe-2" style="font-size: 20px"></i>Canjear una tarjeta
+                                    regalo</a>
+                                <a href=""><i class="bi bi-newspaper pe-2" style="font-size: 20px"></i>
+                                    Descubre las últimas noticias de videojuegos</a>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-4 fs-4">
+                                ¡Visitanos en nuestras redes sociales!
+                            </div>
+                            <div class="medias d-flex align-items-center justify-content-center">
+                                <div class="icons">
+                                    <a class="social-discord" href="">
+                                        <i class="bi bi-discord" style="font-size: 25px"></i>
+                                    </a>
+                                </div>
+                                <div class="icons">
+                                    <a class="social-discord" href="">
+                                        <i class="bi bi-twitter-x" style="font-size: 25px"></i>
+                                    </a>
+                                </div>
+                                <div class="icons">
+                                    <a class="social-discord" href="">
+                                        <i class="bi bi-instagram" style="font-size: 25px"></i>
+                                    </a>
+                                </div>
+                                <div class="icons">
+                                    <a class="social-discord" href="">
+                                        <i class="bi bi-facebook" style="font-size: 25px"></i>
+                                    </a>
+                                </div>
+                                <div class="icons">
+                                    <a class="social-discord" href="">
+                                        <i class="bi bi-youtube" style="font-size: 25px"></i>
+                                    </a>
+                                </div>
+                                <div class="icons">
+                                    <a class="social-discord" href="">
+                                        <i class="bi bi-twitch" style="font-size: 25px"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="last-information mt-5 pb-4">
+                    <div class="copyright text-white">
+                        Copyright © 2024 Gaming Store - All rights reserved
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        function playVideo(element) {
+            var video = element.querySelector("video");
+            if (video) {
+                video.play();
+            }
+        }
+
+        function pauseVideo(element) {
+            var video = element.querySelector("video");
+            if (video) {
+                video.pause();
+            }
+        }
+
+        document.getElementById('minPriceInput').addEventListener('input', filterByCustomPrice);
+        document.getElementById('maxPriceInput').addEventListener('input', filterByCustomPrice);
+
+        function filterByCustomPrice() {
+            let minPriceInput = document.getElementById('minPriceInput').value.trim();
+            let maxPriceInput = document.getElementById('maxPriceInput').value.trim();
+            let minPrice = minPriceInput === '' ? Number.NEGATIVE_INFINITY : parseFloat(minPriceInput);
+            let maxPrice = maxPriceInput === '' ? Number.POSITIVE_INFINITY : parseFloat(maxPriceInput);
+            let items = document.querySelectorAll('.item');
+        
+            if (isNaN(minPrice) && isNaN(maxPrice)) {
+                // Si ambos inputs están vacíos, mostrar todos los elementos
+                items.forEach(item => {
+                    item.style.display = 'block';
+                });
+                return; // No es necesario seguir filtrando
+            }
+        
+            items.forEach(item => {
+                let priceElement = item.querySelector('.price');
+                let price = parseFloat(priceElement.textContent.replace('$', ''));
+                if ((!isNaN(minPrice) && price >= minPrice) && (!isNaN(maxPrice) && price <= maxPrice)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }        
+        
+        var nombreJuegoInput = document.getElementById('nombreJuegoInput');
+
+        nombreJuegoInput.addEventListener('input', function(event) {
+            var searchText = event.target.value.toLowerCase();
+
+            var items = document.querySelectorAll('.item');
+
+            items.forEach(function(item) {
+                var juegoNombre = item.querySelector('.text-game').textContent.toLowerCase();
+
+                if (juegoNombre.includes(searchText)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none'; 
+                }
+            });
+        });
+        
+    </script>   
+   
+
+</body>
+
+<script type="module" src="/js/firebase.js"></script>
+<script type="module" src="/js/firebaseAuth.js"></script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+</html>
